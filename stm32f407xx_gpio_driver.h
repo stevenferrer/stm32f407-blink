@@ -9,17 +9,17 @@
 #include "stm32f407xx.h"
 
 typedef struct GPIO_PinConfig_t {
-	uint8_t GPIO_PinNumber; // use GPIO_PIN_*
-	uint8_t GPIO_PinMode; // use GPIO_MODE_*
-	uint8_t GPIO_PinSpeed; // use GPIO_SPEED_*
-	uint8_t GPIO_PinPuPdControl; // use GPIO_PUPD_*
-	uint8_t GPIO_PinOPType; // use GPIO_OP_TYPE_*
-	uint8_t GPIO_PinAltFunMode;
+  uint8_t GPIO_PinNumber;      // use GPIO_PIN_*
+  uint8_t GPIO_PinMode;        // use GPIO_MODE_*
+  uint8_t GPIO_PinSpeed;       // use GPIO_SPEED_*
+  uint8_t GPIO_PinPuPdControl; // use GPIO_PUPD_*
+  uint8_t GPIO_PinOPType;      // use GPIO_OP_TYPE_*
+  uint8_t GPIO_PinAltFunMode;
 } GPIO_PinConfig_t;
 
 typedef struct GPIO_Handle_t {
-	GPIO_RegDef_t *pGPIOx;
-	GPIO_PinConfig_t GPIO_PinConfig;
+  GPIO_RegDef_t *pGPIOx;
+  GPIO_PinConfig_t GPIO_PinConfig;
 } GPIO_Handle_t;
 
 void GPIO_PeriClockCtrl(GPIO_RegDef_t *pGPIOx, uint8_t enable);
@@ -30,7 +30,7 @@ void GPIO_DeInit(GPIO_RegDef_t *pGPIOx);
 uint8_t GPIO_ReadInputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber);
 uint16_t GPIO_ReadInputPort(GPIO_RegDef_t *pGPIOx);
 void GPIO_WriteOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber,
-		uint8_t value);
+                         uint8_t value);
 void GPIO_WriteOutputPort(GPIO_RegDef_t *pGPIOx, uint16_t value);
 void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber);
 
