@@ -4,27 +4,51 @@ STM32F407 blink example using [STM32F4XX M](https://stm32-base.org/boards/STM32F
 
 ## How to flash
 
-Build:
+Build the binary.
 
 ```console
 $ make
 ```
 
-Start OpenOCD:
+Flash.
 
 ```console
 $ make flash
 ```
 
-Run GDB in another terminal:
+Enjoy watching the LED blink!
+
+## Semihosting
+
+Build semihosting binary.
 
 ```console
-$ arm-none-eabi-gdb
+$ make semi
 ```
 
-Connect to OpenOCD and flash the `blink.elf` file to the board:
+Run OpenOCD.
 
 ```console
-(gdb) target remote :3333
-(gdb) monitor flash write_image erase blink.elf
+$ make debug
+```
+
+Flash, enable semihosting and reset.
+
+```console
+$ arm-none-eabi-gcc
+
+(gcc) target extended-remote :3333
+(gcc) monitor flash write_image erase blink_semi.elf
+(gcc) monitor arm semihosting enable
+(gcc) monitor reset
+```
+
+Watch OpenOCD console print.
+
+```console
+Application is running...
+Toggle count: 1
+Toggle count: 2
+Toggle count: 3
+...
 ```

@@ -1,7 +1,12 @@
+#include <stdio.h>
+
 #include "stm32f407xx.h"
 #include "stm32f407xx_gpio_driver.h"
 
 #define DELAY_NUM 500000
+
+// semihosting init function
+extern void initialise_monitor_handles(void);
 
 void delay(uint32_t div) {
   for (uint32_t i = 0; i < DELAY_NUM / div; i++)
@@ -9,7 +14,10 @@ void delay(uint32_t div) {
 }
 
 int main(void) {
+  initialise_monitor_handles();
+
   GPIO_Handle_t gpio_led;
+  int toggle_count = 0;
 
   gpio_led.pGPIOx = GPIOA;
   gpio_led.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_1;
@@ -20,8 +28,12 @@ int main(void) {
 
   GPIO_Init(&gpio_led);
 
+  printf("Application is running...\n");
+
   for (;;) {
     GPIO_ToggleOutputPin(GPIOA, GPIO_PIN_NO_1);
+    toggle_count++;
+    printf("Toggle count: %d\n", toggle_count);
     delay(1);
   }
 }

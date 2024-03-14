@@ -1,3 +1,8 @@
 CompileFlags:
-  Add: [-xnone, -c, -mcpu=cortex-m4, -mthumb, -std=c99, -Wall, -O0]
+  Add: [-xnone, -c, -mcpu=cortex-m4, -mthumb, -std=gnu11, -Wall, -O0]
   Compiler: arm-none-eabi-gcc
+
+InlayHints:
+  Enabled: Yes
+  BlockEnd: No
+  ParameterNames: No

@@ -1,18 +1,20 @@
 #include <stdint.h>
 
-#define SRAM_START 0x20000000u
+#define SRAM_START (0x20000000u)
 #define SRAM_SIZE (128 * 1024) // 128KB
 #define SRAM_END ((SRAM_START) + (SRAM_SIZE))
 
-#define STACK_START SRAM_END
+#define STACK_START (SRAM_END)
 
 extern uint32_t _etext;
 extern uint32_t _sdata;
 extern uint32_t _edata;
 extern uint32_t _sbss;
 extern uint32_t _ebss;
+extern uint32_t _la_data;
 
 int main(void);
+void __libc_init_array(void);
 
 void Reset_Handler(void);
 
@@ -237,21 +239,23 @@ uint32_t vectors[] __attribute__((section(".isr_vector"))) = {
 
 void Reset_Handler(void) {
   // copy .data section to SRAM
-  uint32_t size = (uint32_t)&_edata - (uint32_t)&_sdata;
+  uint32_t data_size = (uint32_t)&_edata - (uint32_t)&_sdata;
 
-  uint8_t *pdst = (uint8_t *)&_sdata; // sram
-  uint8_t *psrc = (uint8_t *)&_etext; // flash
+  uint8_t *pdst = (uint8_t *)&_sdata;   // sram
+  uint8_t *psrc = (uint8_t *)&_la_data; // flash
 
-  for (uint32_t i = 0; i < size; i++) {
+  for (uint32_t i = 0; i < data_size; i++) {
     *pdst++ = *psrc++;
   }
 
   // init the .bss section to zero in SRAM
-  size = (uint32_t)&_ebss - (uint32_t)&_sbss;
+  uint32_t bss_size = (uint32_t)&_ebss - (uint32_t)&_sbss;
   pdst = (uint8_t *)&_sbss;
-  for (uint32_t i = 0; i < size; i++) {
+  for (uint32_t i = 0; i < bss_size; i++) {
     *pdst++ = 0;
   }
+
+  __libc_init_array();
 
   // call main()
   main();
