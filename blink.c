@@ -1,7 +1,6 @@
 #include <stdio.h>
 
 #include "stm32f407xx.h"
-#include "stm32f407xx_gpio_driver.h"
 
 #define DELAY_NUM 500000
 
@@ -16,22 +15,22 @@ void delay(uint32_t div) {
 int main(void) {
   initialise_monitor_handles();
 
-  GPIO_Handle_t gpio_led;
-  int toggle_count = 0;
+  // Enable peripheral clock for GPIOA
+  RCC->AHB1ENR |= (1 << 0x0u);
 
-  gpio_led.pGPIOx = GPIOA;
-  gpio_led.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_1;
-  gpio_led.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_OUT;
-  gpio_led.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_FAST;
-  gpio_led.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
-  gpio_led.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_PUPD_PU;
-
-  GPIO_Init(&gpio_led);
+  // Set PIN 1 as output mode, each pin uses 2 bit fields, so multiply by 2
+  GPIOA->MODER &= ~(0x3 << 2 * 1);
+  GPIOA->MODER |= (1 << (2 * 1));
 
   printf("Application is running...\n");
 
+  // Toggle LED
+  GPIOA->ODR ^= (1 << 1);
+
+  int toggle_count = 0;
   for (;;) {
-    GPIO_ToggleOutputPin(GPIOA, GPIO_PIN_NO_1);
+    // Toggle LED
+    GPIOA->ODR ^= (1 << 1);
     toggle_count++;
     printf("Toggle count: %d\n", toggle_count);
     delay(1);

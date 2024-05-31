@@ -106,7 +106,4 @@ typedef struct RCC_RegDef_t {
     (RCC->AHB1RSTR &= ~(1 << 0));                                              \
   } while (0)
 
-#define SET 1
-#define ENABLE SET
-
 #endif /* INC_STM32F407XX_H_ */

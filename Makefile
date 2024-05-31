@@ -15,16 +15,16 @@ clean:
 startup.o: startup.c
 	$(CC) $(CFLAGS) -o $@ $^
 
-blink.o: blink.c stm32f407xx.h stm32f407xx_gpio_driver.h
-	$(CC) $(CFLAGS) blink.c stm32f407xx_gpio_driver.c
+blink.o: blink.c stm32f407xx.h
+	$(CC) $(CFLAGS) blink.c
 
 syscalls.o: syscalls.c
 	$(CC) $(CFLAGS) -o $@ $^
 
-blink.elf: blink.o stm32f407xx_gpio_driver.o startup.o syscalls.o
+blink.elf: blink.o startup.o syscalls.o
 	$(CC) $(LDFLAGS_NANO) -o $@ $^
 
-blink_semi.elf: blink.o stm32f407xx_gpio_driver.o startup.o
+blink_semi.elf: blink.o startup.o
 	$(CC) $(LDFLAGS_SEMI) -o $@ $^
 
 dump: blink.elf
